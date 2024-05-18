@@ -1,0 +1,11 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1715940755
+blue_256.png::CompressedTexture2D::3298912804869359222::1715695063::1715695104::1::::<><>::
+icon.svg::CompressedTexture2D::9196091382933860627::1715694644::1715694651::1::::<><>::
+main.gd::GDScript::-1::1715940749::0::1::::<>Node<>::
+main.tscn::PackedScene::1388609350578162010::1715940755::0::1::::<><>::res://main.gd<>uid://but7pe7kisb32::::res://player.tscn<>uid://dj6q3v2y1l4q0::::res://red_tile.tscn
+player.gd::GDScript::-1::1715698166::0::1::::<>CharacterBody2D<>::
+player.tscn::PackedScene::3831390724450881191::1715940755::0::1::::<><>::uid://d4awjtorqxitv::::res://icon.svg<>res://player.gd
+red_256.png::CompressedTexture2D::3654241905663908801::1715695069::1715695104::1::::<><>::
+red_tile.tscn::PackedScene::7855979974136781797::1715939148::0::1::::<><>::uid://bsce3h256bdft::::res://red_256.png
+blue_tile.tscn::PackedScene::8171923009275776832::1715940780::0::1::::<><>::uid://bsce3h256bdft::::res://red_256.png

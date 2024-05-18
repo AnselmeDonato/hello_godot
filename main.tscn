@@ -1,0 +1,13 @@
+[gd_scene load_steps=5 format=3 uid="uid://t1wgtiu1ecek"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_q7dxp"]
+[ext_resource type="PackedScene" uid="uid://but7pe7kisb32" path="res://player.tscn" id="2_aepjn"]
+[ext_resource type="PackedScene" uid="uid://dj6q3v2y1l4q0" path="res://red_tile.tscn" id="2_r4awr"]
+[ext_resource type="PackedScene" uid="uid://doosm4ac62ns7" path="res://blue_tile.tscn" id="3_24rah"]
+
+[node name="main" type="Node"]
+script = ExtResource("1_q7dxp")
+red_tile_scene = ExtResource("2_r4awr")
+blue_tile_scene = ExtResource("3_24rah")
+
+[node name="Player" parent="." instance=ExtResource("2_aepjn")]
