@@ -6,3 +6,4 @@ res://player/player.tscn
 res://level/blue_tile.tscn
 res://level/red_tile.tscn
 res://main.gd
+res://level/generate_level.gd
