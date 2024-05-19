@@ -1,9 +1,6 @@
-res://blue_tile.tscn
-res://red_tile.tscn
-res://main.tscn
-res://player.tscn
-res://player/player.tscn
-res://level/blue_tile.tscn
-res://level/red_tile.tscn
 res://main.gd
-res://level/generate_level.gd
+res://main.tscn
+res://level/blue_tile.tscn
+res://level/tile.tscn
+res://level/tile.gd
+res://player/player.tscn

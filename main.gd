@@ -1,7 +1,6 @@
 extends Node
 
-@export var red_tile_scene: PackedScene
-@export var blue_tile_scene: PackedScene
+@export var tile_scene: PackedScene
 
 const RED_TILE_INT = 0
 const BLUE_TILE_INT = 1
@@ -38,15 +37,16 @@ func collapse_grid():
 func show_grid():
 	for y in range(grid.size()):
 		for x in range(grid[0].size()):
+			var tile = tile_scene.instantiate()
+
 			match grid[x][y]:
 				RED_TILE_INT:
-					var red_tile = red_tile_scene.instantiate()
-					red_tile.position = Vector2(x * TILE_DIMENSION, y * TILE_DIMENSION)
-					add_child(red_tile)
+					tile.load_texture("res://level/assets/red_256.png")
 				BLUE_TILE_INT:
-					var blue_tile = blue_tile_scene.instantiate()
-					blue_tile.position = Vector2(x * TILE_DIMENSION, y * TILE_DIMENSION)
-					add_child(blue_tile)
+					tile.load_texture("res://level/assets/blue_256.png")
+
+			tile.position = Vector2(x * TILE_DIMENSION, y * TILE_DIMENSION)
+			add_child(tile)
 
 
 func build_tile_grid(grid_dimension: int):

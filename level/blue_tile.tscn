@@ -1,10 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://doosm4ac62ns7"]
+[gd_scene load_steps=2 format=3 uid="uid://bt6htuekgte2c"]
 
-[ext_resource type="Texture2D" uid="uid://bnaau2m4nqdle" path="res://level/assets/blue_256.png" id="1_gqlk6"]
+[sub_resource type="GDScript" id="GDScript_xwj6m"]
+script/source = "extends Node2D
 
-[node name="blue_tile" type="Node2D"]
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
+
+[node name="tile" type="Node2D"]
 z_index = -1
+script = SubResource("GDScript_xwj6m")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_gqlk6")
