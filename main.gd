@@ -2,6 +2,8 @@ extends Node
 
 @export var tile_scene: PackedScene
 
+const FORMAT_TEXTURE_PATH = "res://level/assets/%s"
+
 const RED_TILE_INT = 0
 const BLUE_TILE_INT = 1
 
@@ -41,9 +43,9 @@ func show_grid():
 
 			match grid[x][y]:
 				RED_TILE_INT:
-					tile.load_texture("res://level/assets/red_256.png")
+					tile.load_texture(FORMAT_TEXTURE_PATH % "red_256.png")
 				BLUE_TILE_INT:
-					tile.load_texture("res://level/assets/blue_256.png")
+					tile.load_texture(FORMAT_TEXTURE_PATH % "blue_256.png")
 
 			tile.position = Vector2(x * TILE_DIMENSION, y * TILE_DIMENSION)
 			add_child(tile)
