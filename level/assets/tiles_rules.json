@@ -1,45 +1,39 @@
 {
-    "tiles": [
-      {
-        "name": "b",
-        "path": "b.png",
-        "possible_neighbors": {
-            "up": ["b, r_4b"], 
-            "down": ["b, r_4b"], 
-            "left": ["b, r_4b"], 
-            "right": ["b, r_4b"]
-        }
-      },
-      {
-        "name": "b_4r",
-        "path": "b_4r.png",
-        "possible_neighbors": {
-            "up": ["r"], 
-            "down": ["r"], 
-            "left": ["r"], 
-            "right": ["r"]
-        }
-      },
-      {
-        "name": "r",
-        "path": "r.png",
-        "possible_neighbors": {
-            "up": ["r, b_4r"], 
-            "down": ["r, b_4r"], 
-            "left": ["r, b_4r"], 
-            "right": ["r, b_4r"]
-        }
-      },
-      {
-        "name": "r_4b",
-        "path": "r_4b.png",
-        "possible_neighbors": {
-            "up": ["b"], 
-            "down": ["b"], 
-            "left": ["b"], 
-            "right": ["b"]
-        }
-      }
-    ]
+  "b": {
+    "file": "b.png",
+    "possible_neighbors": {
+      "up": {"b": 1, "r_4b": 1}, 
+      "down": {"b": 1, "r_4b": 1}, 
+      "left": {"b": 1, "r_4b": 1}, 
+      "right": {"b": 1, "r_4b": 1}
+    }
+  },
+  "b_4r": {
+    "file": "b_4r.png",
+    "possible_neighbors": {
+      "up": {"r": 1}, 
+      "down": {"r": 1}, 
+      "left": {"r": 1}, 
+      "right": {"r": 1}
+    }
+  },
+  "r": {
+    "file": "r.png",
+    "possible_neighbors": {
+      "up": {"r": 1, "b_4r": 1}, 
+      "down": {"r": 1, "b_4r": 1}, 
+      "left": {"r": 1, "b_4r": 1}, 
+      "right": {"r": 1, "b_4r": 1}
+    }
+  },
+  "r_4b": {
+    "file": "r_4b.png",
+    "possible_neighbors": {
+      "up": {"b": 1}, 
+      "down": {"b": 1}, 
+      "left": {"b": 1}, 
+      "right": {"b": 1}
+    }
   }
+}
   
