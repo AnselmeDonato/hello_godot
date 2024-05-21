@@ -14,7 +14,7 @@ var tiles_rules = {}
 
 # ================== Functions ================== #
 
-func smallest_entropy_tile_in_grid():
+func get_smallest_entropy_tile():
 	var smallest_entropy_tile
 	var smallest_entropy = 99999
 
@@ -32,7 +32,7 @@ func smallest_entropy_tile_in_grid():
 
 	return smallest_entropy_tile
 
-func grid_is_collapsed():
+func is_collapsed():
 	for y in range(grid.size()):
 		for x in range(grid[0].size()):
 			if not grid[y][x].is_collapsed():
@@ -42,8 +42,8 @@ func grid_is_collapsed():
 
 func collapse():
 	var failsafe = 0
-	while not grid_is_collapsed():
-		var tile_to_collapse = smallest_entropy_tile_in_grid()
+	while not is_collapsed():
+		var tile_to_collapse = get_smallest_entropy_tile()
 		tile_to_collapse.collapse()
 
 		# 97 To remove once done
@@ -97,7 +97,7 @@ func show():
 			add_child(tile)
 
 
-func build_grid():
+func build():
 	var all_possible_tiles = {}
 	for tile in tiles_rules.keys():
 		all_possible_tiles[tile] = 1
@@ -129,4 +129,4 @@ func load_tiles_rules():
 # Called when the node enters the scene tree for the first time.
 func _init():
 	load_tiles_rules()
-	build_grid()
+	build()
