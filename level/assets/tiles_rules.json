@@ -1,6 +1,6 @@
 {
   "b": {
-    "file": "b.png",
+    "texture_name": "b.png",
     "possible_neighbors": {
       "up": {"b": 1, "r_4b": 1}, 
       "down": {"b": 1, "r_4b": 1}, 
@@ -9,7 +9,7 @@
     }
   },
   "b_4r": {
-    "file": "b_4r.png",
+    "texture_name": "b_4r.png",
     "possible_neighbors": {
       "up": {"r": 1}, 
       "down": {"r": 1}, 
@@ -18,7 +18,7 @@
     }
   },
   "r": {
-    "file": "r.png",
+    "texture_name": "r.png",
     "possible_neighbors": {
       "up": {"r": 1, "b_4r": 1}, 
       "down": {"r": 1, "b_4r": 1}, 
@@ -27,7 +27,7 @@
     }
   },
   "r_4b": {
-    "file": "r_4b.png",
+    "texture_name": "r_4b.png",
     "possible_neighbors": {
       "up": {"b": 1}, 
       "down": {"b": 1}, 
