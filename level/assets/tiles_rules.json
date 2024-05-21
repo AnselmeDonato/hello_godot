@@ -2,37 +2,37 @@
   "b": {
     "texture_name": "b.png",
     "possible_neighbors": {
-      "up": {"b": 1, "r_4b": 1}, 
-      "down": {"b": 1, "r_4b": 1}, 
-      "left": {"b": 1, "r_4b": 1}, 
-      "right": {"b": 1, "r_4b": 1}
+      "pos_x": {"b": 1, "r_4b": 1},
+      "neg_x": {"b": 1, "r_4b": 1},
+      "pos_y": {"b": 1, "r_4b": 1},
+      "neg_y": {"b": 1, "r_4b": 1}
     }
   },
   "b_4r": {
     "texture_name": "b_4r.png",
     "possible_neighbors": {
-      "up": {"r": 1}, 
-      "down": {"r": 1}, 
-      "left": {"r": 1}, 
-      "right": {"r": 1}
+      "pos_x": {"r": 1},
+      "neg_x": {"r": 1},
+      "pos_y": {"r": 1},
+      "neg_y": {"r": 1}
     }
   },
   "r": {
     "texture_name": "r.png",
     "possible_neighbors": {
-      "up": {"r": 1, "b_4r": 1}, 
-      "down": {"r": 1, "b_4r": 1}, 
-      "left": {"r": 1, "b_4r": 1}, 
-      "right": {"r": 1, "b_4r": 1}
+      "pos_x": {"r": 1, "b_4r": 1},
+      "neg_x": {"r": 1, "b_4r": 1},
+      "pos_y": {"r": 1, "b_4r": 1},
+      "neg_y": {"r": 1, "b_4r": 1}
     }
   },
   "r_4b": {
     "texture_name": "r_4b.png",
     "possible_neighbors": {
-      "up": {"b": 1}, 
-      "down": {"b": 1}, 
-      "left": {"b": 1}, 
-      "right": {"b": 1}
+      "pos_x": {"b": 1},
+      "neg_x": {"b": 1},
+      "pos_y": {"b": 1},
+      "neg_y": {"b": 1}
     }
   }
 }

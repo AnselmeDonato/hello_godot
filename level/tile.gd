@@ -5,7 +5,7 @@ extends Node2D
 const ASSETS_PATH = "res://level/assets/"
 
 var possible_tiles = {}
-
+var grid_position = [-1, -1]
 # ================== Functions ================== #
 
 func is_collapsed():
@@ -17,6 +17,13 @@ func is_collapsed():
 
 func get_entropy():
 	return possible_tiles.size()
+
+
+
+func check_possible_tiles_against_constraint(constraint: Dictionary):
+	for possible_tile in possible_tiles.keys():
+		if not constraint.has(possible_tile):
+			possible_tiles.erase(possible_tile)
 
 
 
@@ -32,6 +39,11 @@ func load_texture():
 
 func set_possible_tiles(possible_tiles_: Dictionary):
 	possible_tiles = possible_tiles_
+
+
+
+func set_grid_position(grid_position_: Array):
+	grid_position = grid_position_
 
 
 
