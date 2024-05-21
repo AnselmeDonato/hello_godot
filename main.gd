@@ -6,14 +6,10 @@ extends Node
 
 const FORMAT_TEXTURE_PATH = "res://level/assets/%s"
 
-const RED_TILE_INT = 0
-const BLUE_TILE_INT = 1
-
 const TILE_DIMENSION = 512
 const GRID_DIMENSTION = 10
 
 var grid = []
-var tiles_to_collapse_position = []
 
 # ================== Functions ================== #
 
@@ -25,18 +21,43 @@ func initialize_grid(grid_dimension: int):
 			var tile = tile_scene.instantiate()
 			row.append(tile)
 
-			tiles_to_collapse_position.append([x, y])
 		grid.append(row)
 
+func smallest_entropy_tile_in_grid():
+	var smallest_entropy_tile
+	var smallest_entropy = 99999
+
+	for y in range(grid.size()):
+		for x in range(grid[0].size()):
+			var tile = grid[y][x]
+
+			if tile.is_collapsed():
+				continue
+
+			var entropy = tile.get_entropy()
+			if entropy < smallest_entropy:
+				smallest_entropy_tile = tile
+				smallest_entropy = entropy
+
+	return smallest_entropy_tile
+
+func grid_is_collapsed():
+	for y in range(grid.size()):
+		for x in range(grid[0].size()):
+			if not grid[y][x].is_collapsed():
+				return false
+	
+	return true
 
 func collapse_grid():
-	var rng = RandomNumberGenerator.new()
-
-	while tiles_to_collapse_position.size() > 0:
-		var tile_position = tiles_to_collapse_position.pop_at(rng.randi_range(0, tiles_to_collapse_position.size() - 1))
-		var tile = grid[tile_position[0]][tile_position[1]]
-		tile.collapse()
-		grid[tile_position[0]][tile_position[1]] = tile
+	var failsafe = 0
+	while not grid_is_collapsed():
+		var tile_to_collapse = smallest_entropy_tile_in_grid()
+		tile_to_collapse.collapse()
+		failsafe += 1
+		if failsafe == 10000:
+			print('HELP')
+			return 1
 
 func show_grid():
 	for y in range(grid.size()):

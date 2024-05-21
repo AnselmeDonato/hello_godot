@@ -16,8 +16,8 @@ var tiles_rules = {}
 
 # ================== Functions ================== #
 
-func get_possible_tiles():
-	return possible_tiles
+func get_entropy():
+	return possible_tiles.size()
 
 
 
@@ -27,7 +27,7 @@ func get_possible_neighbors():
 
 
 func is_collapsed():
-	if possible_tiles.size() == 1:
+	if get_entropy() == 1:
 		return true
 	return false
 
@@ -71,14 +71,12 @@ func load_possible_tiles():
 
 
 func collapse():
-	print('here')
 	var rng = RandomNumberGenerator.new() 
 	var possible_tile_names = possible_tiles.keys()
 	var collapsed_tile_name = possible_tile_names[rng.randi_range(0, possible_tile_names.size() - 1)]
 	var collapsed_tile = tiles_rules[collapsed_tile_name]
 
 	possible_tiles = {collapsed_tile_name: collapsed_tile}
-	print(possible_tiles.size())
 
 
 
