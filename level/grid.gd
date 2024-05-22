@@ -70,9 +70,10 @@ func propagate_collapse(from_tile):
 					neighbor.check_possible_tiles_against_constraint(tiles_rules[possible_tile]['possible_neighbors']['neg_x'])
 				if neighbor.grid_position[1] > tile.grid_position[1]:
 					neighbor.check_possible_tiles_against_constraint(tiles_rules[possible_tile]['possible_neighbors']['pos_y'])
-				if neighbor.grid_position[1] > tile.grid_position[1]:
+				if neighbor.grid_position[1] < tile.grid_position[1]:
 					neighbor.check_possible_tiles_against_constraint(tiles_rules[possible_tile]['possible_neighbors']['neg_y'])
 			
+
 			if neighbor.possible_tiles.size() != initial_possible_tiles_size:
 				stack.append(neighbor)
 
@@ -86,7 +87,7 @@ func get_superposed_neighbors(from_tile):
 		if not neighbor.is_collapsed():
 			superposed_neighbors.append(neighbor)
 			
-	if from_position[0] < GRID_DIMENSTION:
+	if from_position[0] < GRID_DIMENSTION - 1:
 		var neighbor = grid[from_position[1]][from_position[0] + 1]
 		if not neighbor.is_collapsed():
 			superposed_neighbors.append(neighbor)
@@ -96,7 +97,7 @@ func get_superposed_neighbors(from_tile):
 		if not neighbor.is_collapsed():
 			superposed_neighbors.append(neighbor)
 
-	if from_position[0] < GRID_DIMENSTION:
+	if from_position[1] < GRID_DIMENSTION - 1:
 		var neighbor = grid[from_position[1] + 1][from_position[0]]
 		if not neighbor.is_collapsed():
 			superposed_neighbors.append(neighbor)
@@ -113,6 +114,7 @@ func show():
 
 
 func build():
+	var tile_ref = tile_scene.instantiate()
 	var all_possible_tiles = {}
 	for tile in tiles_rules.keys():
 		all_possible_tiles[tile] = 1
@@ -120,8 +122,8 @@ func build():
 	for y in range(GRID_DIMENSTION):
 		var row = []
 		for x in range(GRID_DIMENSTION):
-			var tile = tile_scene.instantiate()
-			tile.set_possible_tiles(all_possible_tiles)
+			var tile = tile_ref.duplicate()
+			tile.set_possible_tiles(all_possible_tiles.duplicate())
 			tile.set_grid_position([x, y])
 			row.append(tile)
 
