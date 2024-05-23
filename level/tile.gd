@@ -5,7 +5,6 @@ extends Node2D
 const ASSETS_PATH = "res://level/assets/"
 
 var superposition = {}
-var grid_position = [-1, -1]
 # ================== Functions ================== #
 
 func is_collapsed():
@@ -41,11 +40,6 @@ func load_texture():
 func set_superposition(superposition_: Dictionary):
 	"""Set the superposition (meant for initialisation of the tile)"""
 	superposition = superposition_
-
-
-func set_grid_position(grid_position_: Array):
-	"""Set the position in the grid (meant for initialisation of the tile)"""
-	grid_position = grid_position_
 
 
 func collapse():
