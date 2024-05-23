@@ -70,16 +70,17 @@ func propagate_collapse(from_pos: Array):
 			var neighbor_tile = tile_at(neighbor_pos)
 			var old_entropy = neighbor_tile.get_entropy()
 
+			var allowed_states = {}
 			for state in current_tile.superposition.keys():
 				if neighbor_pos[0] > current_pos[0]:
-					neighbor_tile.constraint_superposition(tiles_rules[state]['constraints']['pos_x'])
+					allowed_states.merge(tiles_rules[state]['constraints']['pos_x'])
 				if neighbor_pos[0] < current_pos[0]:
-					neighbor_tile.constraint_superposition(tiles_rules[state]['constraints']['neg_x'])
+					allowed_states.merge(tiles_rules[state]['constraints']['neg_x'])
 				if neighbor_pos[1] > current_pos[1]:
-					neighbor_tile.constraint_superposition(tiles_rules[state]['constraints']['pos_y'])
+					allowed_states.merge(tiles_rules[state]['constraints']['pos_y'])
 				if neighbor_pos[1] < current_pos[1]:
-					neighbor_tile.constraint_superposition(tiles_rules[state]['constraints']['neg_y'])
-			
+					allowed_states.merge(tiles_rules[state]['constraints']['neg_y'])
+			neighbor_tile.constraint_superposition(allowed_states)
 
 			if neighbor_tile.get_entropy() != old_entropy:
 				# If a neighbor has partially collapsed (i.e its superposition has changed), we add it to the 
@@ -162,3 +163,11 @@ func load_tiles_rules():
 func _init():
 	load_tiles_rules()
 	init_grid()
+
+
+# =========== For debug ============= #
+
+func print_every_superposition():
+	for x in range(GRID_DIMENSTION):
+		for y in range(GRID_DIMENSTION):
+			print(tile_at([x,y]).superposition)

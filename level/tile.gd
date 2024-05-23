@@ -4,7 +4,7 @@ extends Node2D
 
 const ASSETS_PATH = "res://level/assets/"
 
-var superposition = {}
+var superposition : Dictionary
 # ================== Functions ================== #
 
 func is_collapsed():
@@ -19,10 +19,10 @@ func get_entropy():
 	return superposition.size()
 
 
-func constraint_superposition(constraint: Dictionary):
-	"""Update the states in the superposition using the provided constraint"""
+func constraint_superposition(allowed_states: Dictionary):
+	"""Update the states in the superposition using the provided allowed_states"""
 	for possible_tile in superposition.keys():
-		if not constraint.has(possible_tile):
+		if not allowed_states.has(possible_tile):
 			superposition.erase(possible_tile)
 
 
