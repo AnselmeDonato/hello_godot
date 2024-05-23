@@ -14,7 +14,7 @@ var grid = []
 # ================== Functions ================== #
 
 func tile_at(pos: Array):
-	"""Return the tile at position pos in the grid"""
+	"""Return the tile at a position in the grid (it's NOT godot's own 'position')"""
 	return grid[pos[1]][pos[0]]
 
 
@@ -63,53 +63,56 @@ func propagate_collapse(from_pos: Array):
 	stack.append(from_pos)
 
 	while stack.size() > 0:
-		var pos = stack.pop_back()
-		var tile = tile_at(pos)
+		var current_pos = stack.pop_back()
+		var current_tile = tile_at(current_pos)
 
-		for neighbor_pos in get_superposed_neighbors_pos(pos):
-			var neighbor = tile_at(neighbor_pos)
-			var old_entropy = neighbor.get_entropy()
+		for neighbor_pos in get_superposed_neighbors_pos(current_pos):
+			var neighbor_tile = tile_at(neighbor_pos)
+			var old_entropy = neighbor_tile.get_entropy()
 
-			for possible_tile in tile.superposition.keys():
-				if neighbor_pos[0] > pos[0]:
-					neighbor.constraint_superposition(tiles_rules[possible_tile]['constraints']['pos_x'])
-				if neighbor_pos[0] < pos[0]:
-					neighbor.constraint_superposition(tiles_rules[possible_tile]['constraints']['neg_x'])
-				if neighbor_pos[1] > pos[1]:
-					neighbor.constraint_superposition(tiles_rules[possible_tile]['constraints']['pos_y'])
-				if neighbor_pos[1] < pos[1]:
-					neighbor.constraint_superposition(tiles_rules[possible_tile]['constraints']['neg_y'])
+			for state in current_tile.superposition.keys():
+				if neighbor_pos[0] > current_pos[0]:
+					neighbor_tile.constraint_superposition(tiles_rules[state]['constraints']['pos_x'])
+				if neighbor_pos[0] < current_pos[0]:
+					neighbor_tile.constraint_superposition(tiles_rules[state]['constraints']['neg_x'])
+				if neighbor_pos[1] > current_pos[1]:
+					neighbor_tile.constraint_superposition(tiles_rules[state]['constraints']['pos_y'])
+				if neighbor_pos[1] < current_pos[1]:
+					neighbor_tile.constraint_superposition(tiles_rules[state]['constraints']['neg_y'])
 			
 
-			if neighbor.get_entropy() != old_entropy:
+			if neighbor_tile.get_entropy() != old_entropy:
 				# If a neighbor has partially collapsed (i.e its superposition has changed), we add it to the 
 				# stack to propagate the change to its neighbors too
 				stack.append(neighbor_pos)
 
 
 func get_superposed_neighbors_pos(from_pos):
-	"""Return a list of the position of superposed (i.e not collapsed) 1-neighbors of a position"""
+	"""Return a list of the position of superposed (i.e not collapsed) 1-neighbors of the position from_pos"""
 	var superposed_neighbors_pos = []
 
+	# Sorry for the ugly naming: right here there is going to be a confusion between "_pos"=position, 
+	# used everywhere else in grid.gd, and "pos_"=positive, used for the constraints in tiles_rules.json
+	# I'll find something better one day, but for now let's stick to the confusion
 	if from_pos[0] > 0:
-		var neighbor_pos = [from_pos[1], from_pos[0] - 1]
-		if not tile_at(neighbor_pos).is_collapsed():
-			superposed_neighbors_pos.append(neighbor_pos)
+		var neg_x_pos = [from_pos[0] - 1, from_pos[1]]
+		if not tile_at(neg_x_pos).is_collapsed():
+			superposed_neighbors_pos.append(neg_x_pos)
 
 	if from_pos[0] < GRID_DIMENSTION - 1:
-		var neighbor_pos = [from_pos[1], from_pos[0] - 1]
-		if not tile_at(neighbor_pos).is_collapsed():
-			superposed_neighbors_pos.append(neighbor_pos)
+		var pos_x_pos = [from_pos[0] + 1, from_pos[1]]
+		if not tile_at(pos_x_pos).is_collapsed():
+			superposed_neighbors_pos.append(pos_x_pos)
 
 	if from_pos[1] > 0:
-		var neighbor_pos = [from_pos[1], from_pos[0] - 1]
-		if not tile_at(neighbor_pos).is_collapsed():
-			superposed_neighbors_pos.append(neighbor_pos)
+		var neg_y_pos = [from_pos[0], from_pos[1] - 1]
+		if not tile_at(neg_y_pos).is_collapsed():
+			superposed_neighbors_pos.append(neg_y_pos)
 
 	if from_pos[1] < GRID_DIMENSTION - 1:
-		var neighbor_pos = [from_pos[1], from_pos[0] - 1]
-		if not tile_at(neighbor_pos).is_collapsed():
-			superposed_neighbors_pos.append(neighbor_pos)
+		var pos_y_pos = [from_pos[0], from_pos[1] + 1]
+		if not tile_at(pos_y_pos).is_collapsed():
+			superposed_neighbors_pos.append(pos_y_pos)
 
 	return superposed_neighbors_pos
 
