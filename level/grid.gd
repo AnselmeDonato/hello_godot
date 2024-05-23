@@ -4,17 +4,17 @@ var tile_scene = preload("res://level/tile.tscn")
 
 # ================== Variables ================== #
 
-const FORMAT_TEXTURE_PATH = "res://level/assets/%s"
 const TILES_RULES_PATH = "res://level/assets/tiles_rules.json"
 const TILE_DIMENSION = 512
 const GRID_DIMENSTION = 10
 
-var grid = []
 var tiles_rules = {}
+var grid = []
 
 # ================== Functions ================== #
 
 func get_smallest_entropy_tile():
+	"""Return the tile with the smallest entropy in the grid (NOT including collapsed tiles)"""
 	var smallest_entropy_tile
 	var smallest_entropy = 99999
 
@@ -32,7 +32,9 @@ func get_smallest_entropy_tile():
 
 	return smallest_entropy_tile
 
+
 func is_collapsed():
+	"""Return true if all the tiles in the grid have collapsed to a single state"""
 	for y in range(grid.size()):
 		for x in range(grid[0].size()):
 			if not grid[y][x].is_collapsed():
@@ -40,20 +42,17 @@ func is_collapsed():
 	
 	return true
 
+
 func collapse():
-	var failsafe = 0
+	"""Collapse the grid by collapsing each tile and propagating the result"""
 	while not is_collapsed():
 		var collapse_tile = get_smallest_entropy_tile()
 		collapse_tile.collapse()
 		propagate_collapse(collapse_tile)
 
-		# 97 To remove once done
-		failsafe += 1
-		if failsafe == 10000:
-			print('HELP')
-			return 1
 
 func propagate_collapse(from_tile):
+	"""Propagate the result of the collapse of one tile to n-neighbors"""
 	var stack = []
 	stack.append(from_tile)
 
@@ -61,24 +60,27 @@ func propagate_collapse(from_tile):
 		var tile = stack.pop_back()
 
 		for neighbor in get_superposed_neighbors(tile):
-			var initial_possible_tiles_size = neighbor.possible_tiles.size()
+			var old_entropy = neighbor.get_entropy()
 
-			for possible_tile in tile.possible_tiles.keys():
+			for possible_tile in tile.superposition.keys():
 				if neighbor.grid_position[0] > tile.grid_position[0]:
-					neighbor.check_possible_tiles_against_constraint(tiles_rules[possible_tile]['possible_neighbors']['pos_x'])
+					neighbor.constraint_superposition(tiles_rules[possible_tile]['constraints']['pos_x'])
 				if neighbor.grid_position[0] < tile.grid_position[0]:
-					neighbor.check_possible_tiles_against_constraint(tiles_rules[possible_tile]['possible_neighbors']['neg_x'])
+					neighbor.constraint_superposition(tiles_rules[possible_tile]['constraints']['neg_x'])
 				if neighbor.grid_position[1] > tile.grid_position[1]:
-					neighbor.check_possible_tiles_against_constraint(tiles_rules[possible_tile]['possible_neighbors']['pos_y'])
+					neighbor.constraint_superposition(tiles_rules[possible_tile]['constraints']['pos_y'])
 				if neighbor.grid_position[1] < tile.grid_position[1]:
-					neighbor.check_possible_tiles_against_constraint(tiles_rules[possible_tile]['possible_neighbors']['neg_y'])
+					neighbor.constraint_superposition(tiles_rules[possible_tile]['constraints']['neg_y'])
 			
 
-			if neighbor.possible_tiles.size() != initial_possible_tiles_size:
+			if neighbor.get_entropy() != old_entropy:
+				# If a neighbor has partially collapsed (i.e its superposition has changed), we add it to the 
+				# stack to propagate the change to its neighbors too
 				stack.append(neighbor)
 
 
 func get_superposed_neighbors(from_tile):
+	"""Return a list of the superposed (i.e not collapsed) 1-neighbors of a tile"""
 	var from_position = from_tile.grid_position
 	var superposed_neighbors = []
 
@@ -105,6 +107,7 @@ func get_superposed_neighbors(from_tile):
 	return superposed_neighbors
 
 func show():
+	"""Show the grid by loading textures of all the tiles"""
 	for y in range(grid.size()):
 		for x in range(grid[0].size()):
 			var tile = grid[y][x]
@@ -113,7 +116,8 @@ func show():
 			add_child(tile)
 
 
-func build():
+func init_grid():
+	"""Initialise the grid with all its tiles"""
 	var tile_ref = tile_scene.instantiate()
 	var all_possible_tiles = {}
 	for tile in tiles_rules.keys():
@@ -123,13 +127,14 @@ func build():
 		var row = []
 		for x in range(GRID_DIMENSTION):
 			var tile = tile_ref.duplicate()
-			tile.set_possible_tiles(all_possible_tiles.duplicate())
+			tile.set_superposition(all_possible_tiles.duplicate())
 			tile.set_grid_position([x, y])
 			row.append(tile)
 
 		grid.append(row)
 
 func load_tiles_rules():
+	"""Load the rules for tiles adjacency from a json file"""
 	var tiles_rules_string = FileAccess.get_file_as_string(TILES_RULES_PATH)
 	var open_error = FileAccess.get_open_error()
 	if open_error > 0:
@@ -147,4 +152,4 @@ func load_tiles_rules():
 # Called when the node enters the scene tree for the first time.
 func _init():
 	load_tiles_rules()
-	build()
+	init_grid()

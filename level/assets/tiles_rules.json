@@ -1,7 +1,6 @@
 {
   "b": {
-    "texture_name": "b.png",
-    "possible_neighbors": {
+    "constraints": {
       "pos_x": {"r": 1},
       "neg_x": {"r": 1},
       "pos_y": {"r": 1},
@@ -9,8 +8,7 @@
     }
   },
   "r": {
-    "texture_name": "r.png",
-    "possible_neighbors": {
+    "constraints": {
       "pos_x": {"b": 1},
       "neg_x": {"b": 1},
       "pos_y": {"b": 1},
