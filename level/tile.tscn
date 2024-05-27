@@ -8,3 +8,4 @@ script = ExtResource("1_d6v8p")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+centered = false

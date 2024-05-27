@@ -1,6 +1,7 @@
 extends Node
 
 var tile_scene = preload("res://level/tile.tscn")
+var level_boundary_scene = preload("res://level/level_boundary.tscn")
 
 # ================== Variables ================== #
 
@@ -130,6 +131,7 @@ func load_tiles_rules():
 
 func init_grid():
 	"""Initialise the grid with all its tiles"""
+	# Initialise tiles
 	var tile_ref = tile_scene.instantiate()
 	var all_possible_tiles = {}
 	for tile in tiles_rules.keys():
@@ -143,6 +145,22 @@ func init_grid():
 			row.append(tile)
 
 		grid.append(row)
+	
+	# Create world boundaries
+	var GRID_END = TILE_DIMENSION * GRID_DIMENSION
+
+	var neg_x_boundary = level_boundary_scene.instantiate()
+	neg_x_boundary.demarcate_between(Vector2(0, 0), Vector2(0, GRID_END))
+	add_child(neg_x_boundary)
+	var pos_x_boundary = level_boundary_scene.instantiate()
+	pos_x_boundary.demarcate_between(Vector2(GRID_END, 0), Vector2(GRID_END, GRID_END))
+	add_child(pos_x_boundary)
+	var neg_y_boundary = level_boundary_scene.instantiate()
+	neg_y_boundary.demarcate_between(Vector2(0,0), Vector2(GRID_END, 0))
+	add_child(neg_y_boundary)
+	var pos_y_boundary = level_boundary_scene.instantiate()
+	pos_y_boundary.demarcate_between(Vector2(0,GRID_END), Vector2(GRID_END, GRID_END))
+	add_child(pos_y_boundary)
 
 
 func _init():

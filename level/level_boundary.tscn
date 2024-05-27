@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bmf0h3pb4athr"]
+
+[ext_resource type="Script" path="res://level/level_boundary.gd" id="1_nvwef"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_vgssy"]
+resource_local_to_scene = true
+
+[node name="LevelBoundary" type="Node"]
+script = ExtResource("1_nvwef")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("SegmentShape2D_vgssy")

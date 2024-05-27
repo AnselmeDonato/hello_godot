@@ -50,6 +50,6 @@ func collapse():
 	var collapsed = possible[rng.randi_range(0, possible.size() - 1)]
 	superposition = {collapsed: 1}
 
-# Called when when the object's script is instantiated.
+# Called when the object's script is instantiated.
 func _init():
 	pass
