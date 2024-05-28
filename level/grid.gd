@@ -5,9 +5,10 @@ var level_boundary_scene = preload("res://level/level_boundary.tscn")
 
 # ================== Variables ================== #
 
+var GRID_DIMENSION : int
+
 var TILES_RULES_PATH = "res://level/assets/tiles_rules.json"
 var TILE_DIMENSION = 512
-var GRID_DIMENSION = 10
 
 var tiles_rules = {}
 var grid = []
@@ -163,11 +164,13 @@ func init_grid():
 	add_child(pos_y_boundary)
 
 
-func _init():
-	"""Called when the node enters the scene tree for the first time"""
+func with_data(grid_dimension_: int):
+	"""Workaround to 'pas arguments to _init()' with a syntax like '<packed_scene>.instantiate().with_data(...)'"""
+	GRID_DIMENSION = grid_dimension_
+
 	load_tiles_rules()
 	init_grid()
-
+	return self 
 
 func collapse():
 	"""Collapse the grid by collapsing each tile and propagating the result"""

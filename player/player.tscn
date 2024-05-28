@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://but7pe7kisb32"]
 
-[ext_resource type="Texture2D" uid="uid://d4awjtorqxitv" path="res://level/assets/icon.svg" id="1_5cpub"]
+[ext_resource type="Texture2D" uid="uid://d4awjtorqxitv" path="res://player/assets/icon.svg" id="2_hoybd"]
 [ext_resource type="Script" path="res://player/player.gd" id="2_wkngh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rnp3v"]
@@ -11,9 +11,10 @@ script = ExtResource("2_wkngh")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_5cpub")
+texture = ExtResource("2_hoybd")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_rnp3v")
