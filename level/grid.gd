@@ -5,10 +5,10 @@ var level_boundary_scene = preload("res://level/level_boundary.tscn")
 
 # ================== Variables ================== #
 
-var GRID_DIMENSION : int
+var GRID_DIMENSION : Vector2i
 
 var TILES_RULES_PATH = "res://level/assets/tiles_rules.json"
-var TILE_DIMENSION = 512
+var TILE_DIMENSION = Vector2i(512, 512)
 
 var tiles_rules = {}
 var grid = []
@@ -63,7 +63,7 @@ func get_superposed_neighbors_pos(from_pos):
 		if not tile_at(neg_x_pos).is_collapsed():
 			superposed_neighbors_pos.append(neg_x_pos)
 
-	if from_pos[0] < GRID_DIMENSION - 1:
+	if from_pos[0] < GRID_DIMENSION.x - 1:
 		var pos_x_pos = [from_pos[0] + 1, from_pos[1]]
 		if not tile_at(pos_x_pos).is_collapsed():
 			superposed_neighbors_pos.append(pos_x_pos)
@@ -73,7 +73,7 @@ func get_superposed_neighbors_pos(from_pos):
 		if not tile_at(neg_y_pos).is_collapsed():
 			superposed_neighbors_pos.append(neg_y_pos)
 
-	if from_pos[1] < GRID_DIMENSION - 1:
+	if from_pos[1] < GRID_DIMENSION.y - 1:
 		var pos_y_pos = [from_pos[0], from_pos[1] + 1]
 		if not tile_at(pos_y_pos).is_collapsed():
 			superposed_neighbors_pos.append(pos_y_pos)
@@ -112,8 +112,6 @@ func propagate_collapse(from_pos: Array):
 				stack.append(neighbor_pos)
 
 
-# ====================== "Public" functions ====================== #
-
 func load_tiles_rules():
 	"""Load the rules for tiles adjacency from a json file"""
 	var tiles_rules_string = FileAccess.get_file_as_string(TILES_RULES_PATH)
@@ -130,6 +128,12 @@ func load_tiles_rules():
 	tiles_rules = json.data
 
 
+# ====================== "Public" functions ====================== #
+
+func level_dimension():
+	"""Return the dimension of the level (i.e the part walkable by the player)"""
+	return GRID_DIMENSION * TILE_DIMENSION
+
 func init_grid():
 	"""Initialise the grid with all its tiles"""
 	# Initialise tiles
@@ -138,9 +142,9 @@ func init_grid():
 	for tile in tiles_rules.keys():
 		all_possible_tiles[tile] = 1
 
-	for y in range(GRID_DIMENSION):
+	for y in range(GRID_DIMENSION.y):
 		var row = []
-		for x in range(GRID_DIMENSION):
+		for x in range(GRID_DIMENSION.x):
 			var tile = tile_ref.duplicate()
 			tile.set_superposition(all_possible_tiles.duplicate())
 			row.append(tile)
@@ -148,23 +152,23 @@ func init_grid():
 		grid.append(row)
 	
 	# Create world boundaries
-	var GRID_END = TILE_DIMENSION * GRID_DIMENSION
+	var LEVEL_END = TILE_DIMENSION * GRID_DIMENSION
 
 	var neg_x_boundary = level_boundary_scene.instantiate()
-	neg_x_boundary.demarcate_between(Vector2(0, 0), Vector2(0, GRID_END))
+	neg_x_boundary.demarcate_between(Vector2(0, 0), Vector2(0, LEVEL_END.y))
 	add_child(neg_x_boundary)
 	var pos_x_boundary = level_boundary_scene.instantiate()
-	pos_x_boundary.demarcate_between(Vector2(GRID_END, 0), Vector2(GRID_END, GRID_END))
+	pos_x_boundary.demarcate_between(Vector2(LEVEL_END.x, 0), Vector2(LEVEL_END.x, LEVEL_END.y))
 	add_child(pos_x_boundary)
 	var neg_y_boundary = level_boundary_scene.instantiate()
-	neg_y_boundary.demarcate_between(Vector2(0,0), Vector2(GRID_END, 0))
+	neg_y_boundary.demarcate_between(Vector2(0,0), Vector2(LEVEL_END.x, 0))
 	add_child(neg_y_boundary)
 	var pos_y_boundary = level_boundary_scene.instantiate()
-	pos_y_boundary.demarcate_between(Vector2(0,GRID_END), Vector2(GRID_END, GRID_END))
+	pos_y_boundary.demarcate_between(Vector2(0,LEVEL_END.y), Vector2(LEVEL_END.x, LEVEL_END.y))
 	add_child(pos_y_boundary)
 
 
-func with_data(grid_dimension_: int):
+func with_data(grid_dimension_: Vector2):
 	"""Workaround to 'pas arguments to _init()' with a syntax like '<packed_scene>.instantiate().with_data(...)'"""
 	GRID_DIMENSION = grid_dimension_
 
@@ -186,13 +190,13 @@ func show():
 		for x in range(grid[0].size()):
 			var tile = tile_at([x,y])
 			tile.load_texture()
-			tile.position = Vector2(x * TILE_DIMENSION, y * TILE_DIMENSION)
+			tile.position = Vector2(x * TILE_DIMENSION.x, y * TILE_DIMENSION.y)
 			add_child(tile)
 
 
 # =========== For debug ============= #
 
 func print_every_superposition():
-	for x in range(GRID_DIMENSION):
-		for y in range(GRID_DIMENSION):
+	for x in range(GRID_DIMENSION.x):
+		for y in range(GRID_DIMENSION.y):
 			print(tile_at([x,y]).superposition)
